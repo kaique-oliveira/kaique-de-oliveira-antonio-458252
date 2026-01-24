@@ -28,3 +28,8 @@ export async function listPets(page = 1, search = '') {
 
   return data
 }
+
+export async function getPetById(id: number) {
+  const { data } = await http.get<Pet>(`/v1/pets/${id}`)
+  return data
+}
