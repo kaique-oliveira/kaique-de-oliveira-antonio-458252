@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { refreshHttp } from './refreshHttp'
 
 let isRefreshing = false
 let failedQueue: any[] = []
@@ -15,7 +16,7 @@ export const http = axios.create({
   baseURL: 'https://pet-manager-api.geia.vip',
 })
 
-http.interceptors.request.use((config) => {
+http.interceptors.request.use(config => {
   const token = localStorage.getItem('access_token')
   if (token) {
     config.headers.Authorization = `Bearer ${token}`
@@ -45,7 +46,7 @@ http.interceptors.response.use(
         const refreshToken = localStorage.getItem('refresh_token')
         if (!refreshToken) throw error
 
-        const { data } = await http.put('/autenticacao/refresh', {
+        const { data } = await refreshHttp.put('/autenticacao/refresh', {
           refresh_token: refreshToken,
         })
 
@@ -54,6 +55,7 @@ http.interceptors.response.use(
 
         processQueue(null, data.access_token)
 
+        originalRequest.headers.Authorization = `Bearer ${data.access_token}`
         return http(originalRequest)
       } catch (err) {
         processQueue(err, null)
