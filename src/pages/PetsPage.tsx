@@ -1,23 +1,11 @@
-import { useEffect, useState } from 'react'
-import { listPets, type Pet } from '../shared/api/pets.service'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { usePets } from '../modules/pets/facade/usePets'
 
 export default function PetsPage() {
-  const [pets, setPets] = useState<Pet[]>([])
   const [page, setPage] = useState(1)
   const [search, setSearch] = useState('')
-  const [loading, setLoading] = useState(false)
-
-  async function loadPets() {
-    setLoading(true)
-    const data = await listPets(page, search)
-   setPets(data.content)
-    setLoading(false)
-  }
-
-  useEffect(() => {
-    loadPets()
-  }, [page, search])
+  const { items: pets, loading } = usePets(page, search)
 
   return (
     <div className="space-y-4">
@@ -35,27 +23,17 @@ export default function PetsPage() {
       <ul className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {pets.map(pet => (
           <Link key={pet.id} to={`/pets/${pet.id}`} className="border p-4 rounded block">
-          <li  className="border p-4 rounded">
             <p><b>Nome:</b> {pet.nome}</p>
             <p><b>Raça:</b> {pet.raca}</p>
-            <p><b>Idade:</b> {pet.idade}</p>
-          </li>
           </Link>
         ))}
       </ul>
 
       <div className="flex gap-2">
-        <button
-          disabled={page === 1}
-          onClick={() => setPage(p => p - 1)}
-          className="px-3 py-1 border"
-        >
+        <button disabled={page === 1} onClick={() => setPage(p => p - 1)}>
           Anterior
         </button>
-        <button
-          onClick={() => setPage(p => p + 1)}
-          className="px-3 py-1 border"
-        >
+        <button onClick={() => setPage(p => p + 1)}>
           Próxima
         </button>
       </div>
