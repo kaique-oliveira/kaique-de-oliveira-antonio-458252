@@ -7,6 +7,7 @@ const PetsPage = lazy(() => import('./pages/PetsPage'))
 const TutorsPage = lazy(() => import('./pages/TutorsPage'))
 const LoginPage = lazy(() => import('./pages/LoginPage'))
 const PetDetailsPage = lazy(() => import('./pages/PetDetailsPage'))
+const HealthPage = lazy(() => import('./pages/HealthPage'))
 
 export function AppRouter() {
   return (
@@ -14,6 +15,7 @@ export function AppRouter() {
       <Suspense fallback={<div>Loading...</div>}>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
+<Route path="/health" element={<HealthPage />} />
 
           <Route element={<ProtectedRoute />}>
             <Route element={<Layout />}>
