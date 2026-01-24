@@ -1,13 +1,17 @@
 {
   "name": "kaique-de-oliveira-antonio-458252",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
-  "scripts": {
+ "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
+    "build": "vite build",
+    "preview": "vite preview",
+
+    "docker:build": "docker build -t pets-frontend .",
+    "docker:run": "docker run -p 4173:4173 pets-frontend",
+    "docker:stop": "docker stop $(docker ps -q --filter ancestor=pets-frontend)",
+    "docker:restart": "yarn docker:stop && yarn docker:build && yarn docker:run"
   },
   "dependencies": {
     "axios": "^1.13.2",
