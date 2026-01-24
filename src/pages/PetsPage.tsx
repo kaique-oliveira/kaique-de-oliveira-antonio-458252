@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { listPets, type Pet } from '../shared/api/pets.service'
+import { Link } from 'react-router-dom'
 
 export default function PetsPage() {
   const [pets, setPets] = useState<Pet[]>([])
@@ -33,11 +34,13 @@ export default function PetsPage() {
 
       <ul className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {pets.map(pet => (
-          <li key={pet.id} className="border p-4 rounded">
+          <Link key={pet.id} to={`/pets/${pet.id}`} className="border p-4 rounded block">
+          <li  className="border p-4 rounded">
             <p><b>Nome:</b> {pet.nome}</p>
             <p><b>Raça:</b> {pet.raca}</p>
             <p><b>Idade:</b> {pet.idade}</p>
           </li>
+          </Link>
         ))}
       </ul>
 
