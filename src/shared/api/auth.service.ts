@@ -5,10 +5,10 @@ type LoginResponse = {
   refresh_token: string
 }
 
-export async function login(email: string, password: string) {
+export async function login(username: string, password: string) {
   const { data } = await http.post<LoginResponse>(
     '/autenticacao/login',
-    { email, password }
+    { username, password }
   )
   return data
 }

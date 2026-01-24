@@ -3,25 +3,32 @@ import { login } from '../shared/api/auth.service'
 import { useNavigate } from 'react-router-dom'
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('')
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const navigate = useNavigate()
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
-    const data = await login(email, password)
+async function handleSubmit(e: React.FormEvent) {
+  e.preventDefault()
+
+  try {
+    const data = await login(username, password)
+
     localStorage.setItem('access_token', data.access_token)
     localStorage.setItem('refresh_token', data.refresh_token)
+
     navigate('/pets')
+  } catch (error) {
+    alert('Credenciais inválidas')
   }
+}
 
   return (
     <form onSubmit={handleSubmit} className="max-w-sm mx-auto mt-20 space-y-4">
       <input
         className="w-full border p-2"
-        placeholder="Email"
-        value={email}
-        onChange={e => setEmail(e.target.value)}
+        placeholder="User Name"
+        value={username}
+        onChange={e => setUsername(e.target.value)}
       />
       <input
         className="w-full border p-2"
