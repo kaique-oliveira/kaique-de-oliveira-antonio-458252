@@ -54,6 +54,6 @@ export const petsFacade = {
   createPet,
   updatePet,
   deletePet,
-  uploadPhoto
+  uploadPhoto 
 }
 
