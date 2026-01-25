@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { lazy, Suspense } from 'react'
 import ProtectedRoute from './shared/auth/ProtectedRoute'
 import { Layout } from './shared/components/Layout'
+import PetCreatePage from './pages/PetCreatePage'
 
 const PetsPage = lazy(() => import('./pages/PetsPage'))
 const TutorsPage = lazy(() => import('./pages/TutorsPage'))
@@ -15,12 +16,13 @@ export function AppRouter() {
       <Suspense fallback={<div>Loading...</div>}>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
-<Route path="/health" element={<HealthPage />} />
+          <Route path="/health" element={<HealthPage />} />
 
           <Route element={<ProtectedRoute />}>
             <Route element={<Layout />}>
               <Route path="/" element={<Navigate to="/pets" />} />
               <Route path="/pets" element={<PetsPage />} />
+              <Route path="/pets/novo" element={<PetCreatePage />} />
               <Route path="/pets/:id" element={<PetDetailsPage />} />
               <Route path="/tutors" element={<TutorsPage />} />
             </Route>
