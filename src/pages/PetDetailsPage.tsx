@@ -19,6 +19,7 @@ export default function PetDetailsPage() {
       <h1 className="text-xl font-bold">{pet.nome}</h1>
       <p><b>Raça:</b> {pet.raca}</p>
       <p><b>Idade:</b> {pet.idade ?? 'Não informado'}</p>
+      
     </div>
   )
 }
