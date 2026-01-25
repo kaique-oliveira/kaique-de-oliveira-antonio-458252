@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
-import { petDetailsFacade } from './pet-details.facade'
-import type { PetDetailsState } from './pet-details.facade'
+import { petDetailsFacade, type PetDetailsState } from './pet-details.facade'
 
 export function usePetDetails(id: number) {
   const [state, setState] = useState<PetDetailsState>({

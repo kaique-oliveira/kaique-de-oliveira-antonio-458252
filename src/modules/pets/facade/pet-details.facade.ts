@@ -1,9 +1,11 @@
 import { BehaviorSubject } from 'rxjs'
 import { petsService } from '../../../shared/api/pets.service'
 import type { Pet } from '../../../shared/api/pets.service'
+import type { Tutor } from '../../../shared/api/tutors.service'
+
 
 export type PetDetailsState = {
-  pet: Pet | null
+  pet: (Pet & { tutores?: Tutor[] }) | null
   loading: boolean
 }
 
@@ -17,13 +19,18 @@ class PetDetailsFacade {
 
   async load(id: number) {
     this.state$.next({ pet: null, loading: true })
+    const { data } = await petsService.getById(id)
+    this.state$.next({ pet: data, loading: false })
+  }
 
-    const { data: pet } = await petsService.getById(id)
+  async addTutor(petId: number, tutorId: number) {
+    await petsService.addTutor(petId, tutorId)
+    await this.load(petId)
+  }
 
-    this.state$.next({
-      pet,
-      loading: false,
-    })
+  async removeTutor(petId: number, tutorId: number) {
+    await petsService.removeTutor(petId, tutorId)
+    await this.load(petId)
   }
 }
 
