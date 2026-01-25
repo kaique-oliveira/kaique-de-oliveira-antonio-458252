@@ -1,8 +1,9 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { TutorForm } from '../components/TutorForm'
+import { PetPhotoInput } from '../../pets/components/PetPhotoInput'
 import { tutorsFacade } from '../facade/tutors.facade'
-import type { CreateTutorInput } from '../../../shared/api/tutors.service'
 import { useTutorDetails } from '../facade/useTutorDetails'
+import type { CreateTutorInput } from '../../../shared/api/tutors.service'
 
 export default function TutorEditPage() {
   const { id } = useParams<{ id: string }>()
@@ -13,7 +14,11 @@ export default function TutorEditPage() {
 
   async function handleSubmit(data: CreateTutorInput) {
     await tutorsFacade.updateTutor(tutorId, data)
-    navigate('/tutores')
+    navigate('/tutors')
+  }
+
+  async function handlePhotoSelect(file: File) {
+    await tutorsFacade.uploadPhoto(tutorId, file)
   }
 
   if (loading || !tutor) {
@@ -21,10 +26,13 @@ export default function TutorEditPage() {
   }
 
   return (
-    <div className="max-w-lg mx-auto mt-8">
-      <h1 className="text-xl font-semibold mb-4">
-        Editar Tutor
-      </h1>
+    <div className="max-w-lg mx-auto mt-8 space-y-4">
+      <h1 className="text-xl font-semibold">Editar Tutor</h1>
+
+      <PetPhotoInput
+        initialUrl={tutor.foto?.url ?? null}
+        onSelect={handlePhotoSelect}
+      />
 
       <TutorForm
         initialValues={{

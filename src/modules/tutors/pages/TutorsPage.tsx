@@ -21,7 +21,7 @@ export default function TutorsPage() {
         <h1 className="text-xl font-semibold">Tutores</h1>
 
         <Link
-          to="/tutores/novo"
+          to="/tutors/novo"
           className="bg-slate-900 text-white px-4 py-2 rounded"
         >
           Novo Tutor
@@ -38,7 +38,7 @@ export default function TutorsPage() {
 
             <div className="flex gap-2">
               <Link
-                to={`/tutores/${tutor.id}/editar`}
+                to={`/tutors/${tutor.id}/editar`}
                 className="text-blue-600"
               >
                 Editar

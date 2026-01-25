@@ -52,7 +52,7 @@ export const tutorsService = {
 
   uploadPhoto(tutorId: number, file: File) {
     const formData = new FormData()
-    formData.append('file', file)
+    formData.append('foto', file)
 
     return http.post(`/v1/tutores/${tutorId}/fotos`, formData)
   },
