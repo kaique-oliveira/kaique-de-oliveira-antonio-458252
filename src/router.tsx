@@ -3,6 +3,7 @@ import { lazy, Suspense } from 'react'
 import ProtectedRoute from './shared/auth/ProtectedRoute'
 import { Layout } from './shared/components/Layout'
 import PetCreatePage from './pages/PetCreatePage'
+import PetEditPage from './pages/PetEditPage'
 
 const PetsPage = lazy(() => import('./pages/PetsPage'))
 const TutorsPage = lazy(() => import('./pages/TutorsPage'))
@@ -24,6 +25,7 @@ export function AppRouter() {
               <Route path="/pets" element={<PetsPage />} />
               <Route path="/pets/novo" element={<PetCreatePage />} />
               <Route path="/pets/:id" element={<PetDetailsPage />} />
+              <Route path="/pets/:id/editar" element={<PetEditPage />} />
               <Route path="/tutors" element={<TutorsPage />} />
             </Route>
           </Route>
