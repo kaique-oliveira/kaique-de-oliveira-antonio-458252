@@ -49,15 +49,19 @@ export const petsService = {
   remove(id: number) {
     return http.delete<void>(`/v1/pets/${id}`)
   },
-}
 
-export async function uploadPetPhoto(petId: number, file: File) {
-  const formData = new FormData()
-  formData.append('file', file)
+  uploadPhoto(petId: number, file: File) {
+    const formData = new FormData()
+    formData.append('file', file)
 
-  await http.post(`/v1/pets/${petId}/fotos`, formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  })
+    return http.post(`/v1/pets/${petId}/fotos`, formData)
+  },
+
+  addTutor(petId: number, tutorId: number) {
+    return http.post(`/v1/pets/${petId}/tutores/${tutorId}`)
+  },
+
+  removeTutor(petId: number, tutorId: number) {
+    return http.delete(`/v1/pets/${petId}/tutores/${tutorId}`)
+  },
 }

@@ -1,5 +1,5 @@
 import { BehaviorSubject } from 'rxjs'
-import { petsService, uploadPetPhoto } from '../../../shared/api/pets.service'
+import { petsService } from '../../../shared/api/pets.service'
 import type { Pet, CreatePetInput } from '../../../shared/api/pets.service'
 
 export type PetsState = {
@@ -44,7 +44,7 @@ async function deletePet(id: number) {
 }
 
 async function uploadPhoto(petId: number, file: File) {
-  await uploadPetPhoto(petId, file)
+  await petsService.uploadPhoto(petId, file)
   await load()
 }
 
