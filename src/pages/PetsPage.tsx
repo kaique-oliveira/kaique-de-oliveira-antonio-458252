@@ -1,42 +1,53 @@
-import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { usePets } from '../modules/pets/facade/usePets'
+import { petsFacade } from '../modules/pets/facade/pets.facade'
+
+
 
 export default function PetsPage() {
-  const [page, setPage] = useState(1)
-  const [search, setSearch] = useState('')
-  const { items: pets, loading } = usePets(page, search)
+  const { items, loading } = usePets(1, '')
+
+  async function handleDelete(id: number) {
+    const confirmed = window.confirm('Deseja realmente excluir este pet?')
+    if (!confirmed) return
+
+    await petsFacade.deletePet(id)
+  }
+
+  if (loading) {
+    return <p className="text-center mt-8">Carregando...</p>
+  }
 
   return (
-    <div className="space-y-4">
-      <h1 className="text-xl font-bold">Pets</h1>
+    <div className="max-w-4xl mx-auto mt-8">
+      <h1 className="text-xl font-semibold mb-4">Pets</h1>
 
-      <input
-        className="border p-2 w-full max-w-sm"
-        placeholder="Buscar por nome"
-        value={search}
-        onChange={e => setSearch(e.target.value)}
-      />
+      <ul className="space-y-2">
+        {items.map((pet) => (
+          <li
+            key={pet.id}
+            className="flex justify-between items-center border p-3 rounded"
+          >
+            <span>{pet.nome}</span>
 
-      {loading && <p>Carregando...</p>}
+            <div className="flex gap-2">
+              <Link
+                to={`/pets/${pet.id}/editar`}
+                className="text-blue-600"
+              >
+                Editar
+              </Link>
 
-      <ul className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {pets.map(pet => (
-          <Link key={pet.id} to={`/pets/${pet.id}`} className="border p-4 rounded block">
-            <p><b>Nome:</b> {pet.nome}</p>
-            <p><b>Raça:</b> {pet.raca}</p>
-          </Link>
+              <button
+                onClick={() => handleDelete(pet.id)}
+                className="text-red-600"
+              >
+                Excluir
+              </button>
+            </div>
+          </li>
         ))}
       </ul>
-
-      <div className="flex gap-2">
-        <button disabled={page === 1} onClick={() => setPage(p => p - 1)}>
-          Anterior
-        </button>
-        <button onClick={() => setPage(p => p + 1)}>
-          Próxima
-        </button>
-      </div>
     </div>
   )
 }
