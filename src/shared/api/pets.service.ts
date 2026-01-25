@@ -58,10 +58,10 @@ export const petsService = {
   },
 
   addTutor(petId: number, tutorId: number) {
-    return http.post(`/v1/pets/${petId}/tutores/${tutorId}`)
+    return http.post(`/v1/tutores/${tutorId}/pets/${petId}`)
   },
 
   removeTutor(petId: number, tutorId: number) {
-    return http.delete(`/v1/pets/${petId}/tutores/${tutorId}`)
+    return http.delete(`/v1/tutores/${tutorId}/pets/${petId}`)
   },
 }
