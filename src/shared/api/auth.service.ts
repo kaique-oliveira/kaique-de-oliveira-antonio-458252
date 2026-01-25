@@ -16,7 +16,13 @@ export async function login(username: string, password: string) {
 export async function refresh(refreshToken: string) {
   const { data } = await http.put<LoginResponse>(
     '/autenticacao/refresh',
-    { refresh_token: refreshToken }
+    null,
+    {
+      headers: {
+        Authorization: `Bearer ${refreshToken}`,
+      },
+    }
   )
+
   return data
 }
