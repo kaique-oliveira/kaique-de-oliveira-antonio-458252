@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
-import { usePets } from '../modules/pets/facade/usePets'
-import { petsFacade } from '../modules/pets/facade/pets.facade'
+import { petsFacade } from '../facade/pets.facade'
+import { usePets } from '../facade/usePets'
+
 
 
 

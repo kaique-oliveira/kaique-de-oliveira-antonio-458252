@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import type { CreatePetInput } from '../shared/api/pets.service'
-import { petsFacade } from '../modules/pets/facade/pets.facade'
-import { PetPhotoInput } from '../modules/pets/components/PetPhotoInput'
-import { PetForm } from '../modules/pets/components/PetForm'
+import type { CreatePetInput } from '../../../shared/api/pets.service'
+import { petsFacade } from '../facade/pets.facade'
+import { PetPhotoInput } from '../components/PetPhotoInput'
+import { PetForm } from '../components/PetForm'
+
 
 
 export default function PetCreatePage() {

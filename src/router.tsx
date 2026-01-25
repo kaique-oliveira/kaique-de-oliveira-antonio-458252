@@ -32,9 +32,9 @@ export function AppRouter() {
               <Route path="/pets/:id" element={<PetDetailsPage />} />
               <Route path="/pets/:id/editar" element={<PetEditPage />} />
 
-              <Route path="/tutores" element={<TutorsPage />} />
-              <Route path="/tutores/novo" element={<TutorCreatePage />} />
-              <Route path="/tutores/:id/editar" element={<TutorEditPage />} />
+              <Route path="/tutors" element={<TutorsPage />} />
+              <Route path="/tutors/novo" element={<TutorCreatePage />} />
+              <Route path="/tutors/:id/editar" element={<TutorEditPage />} />
             </Route>
           </Route>
         </Routes>

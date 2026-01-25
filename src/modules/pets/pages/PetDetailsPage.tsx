@@ -1,5 +1,5 @@
 import { Link, useParams } from 'react-router-dom'
-import { usePetDetails } from '../modules/pets/facade/usePetDetails'
+import { usePetDetails } from '../facade/usePetDetails'
 
 export default function PetDetailsPage() {
   const { id } = useParams()
