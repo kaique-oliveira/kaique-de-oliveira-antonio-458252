@@ -28,8 +28,9 @@ async function load(page = 1, search = '') {
 }
 
 async function createPet(data: CreatePetInput) {
-  await petsService.create(data)
+  const { data: pet } = await petsService.create(data)
   await load()
+  return pet
 }
 
 async function updatePet(id: number, data: CreatePetInput) {
