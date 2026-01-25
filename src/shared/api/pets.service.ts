@@ -10,26 +10,43 @@ export type Pet = {
   } | null
 }
 
-type PetsResponse = {
+export type PetsListParams = {
+  page?: number
+  size?: number
+  nome?: string
+}
+
+export type PetsResponse = {
   content: Pet[]
   total: number
   page: number
   pageCount: number
 }
 
-export async function listPets(page = 1, search = '') {
-  const { data } = await http.get<PetsResponse>('/v1/pets', {
-    params: {
-      page,
-      size: 10,
-      nome: search,
-    },
-  })
-
-  return data
+export type CreatePetInput = {
+  nome: string
+  raca: string
+  idade: number | null
 }
 
-export async function getPetById(id: number) {
-  const { data } = await http.get<Pet>(`/v1/pets/${id}`)
-  return data
+export const petsService = {
+  list(params?: PetsListParams) {
+    return http.get<PetsResponse>('/v1/pets', { params })
+  },
+
+  getById(id: number) {
+    return http.get<Pet>(`/v1/pets/${id}`)
+  },
+
+  create(data: CreatePetInput) {
+    return http.post<Pet>('/v1/pets', data)
+  },
+
+  update(id: number, data: CreatePetInput) {
+    return http.put<Pet>(`/v1/pets/${id}`, data)
+  },
+
+  remove(id: number) {
+    return http.delete<void>(`/v1/pets/${id}`)
+  },
 }

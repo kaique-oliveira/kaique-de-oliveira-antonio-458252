@@ -1,29 +1,51 @@
 import { BehaviorSubject } from 'rxjs'
-import { listPets, type Pet } from '../../../shared/api/pets.service'
+import { petsService } from '../../../shared/api/pets.service'
+import type { Pet, CreatePetInput } from '../../../shared/api/pets.service'
 
-type PetsState = {
+export type PetsState = {
   items: Pet[]
   loading: boolean
 }
 
-class PetsFacade {
-  private state$ = new BehaviorSubject<PetsState>({
-    items: [],
-    loading: false,
+const state$ = new BehaviorSubject<PetsState>({
+  items: [],
+  loading: false,
+})
+
+async function load(page = 1, search = '') {
+  state$.next({ ...state$.value, loading: true })
+
+  const { data } = await petsService.list({
+    page,
+    size: 10,
+    nome: search,
   })
 
-  readonly pets$ = this.state$.asObservable()
-
-  async load(page = 1, search = '') {
-    this.state$.next({ ...this.state$.value, loading: true })
-
-    const data = await listPets(page, search)
-
-    this.state$.next({
-      items: data.content,
-      loading: false,
-    })
-  }
+  state$.next({
+    items: data.content,
+    loading: false,
+  })
 }
 
-export const petsFacade = new PetsFacade()
+async function createPet(data: CreatePetInput) {
+  await petsService.create(data)
+  await load()
+}
+
+async function updatePet(id: number, data: CreatePetInput) {
+  await petsService.update(id, data)
+  await load()
+}
+
+async function deletePet(id: number) {
+  await petsService.remove(id)
+  await load()
+}
+
+export const petsFacade = {
+  pets$: state$.asObservable(),
+  load,
+  createPet,
+  updatePet,
+  deletePet,
+}

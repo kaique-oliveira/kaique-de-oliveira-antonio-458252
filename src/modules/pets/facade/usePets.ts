@@ -1,11 +1,6 @@
 import { useEffect, useState } from 'react'
 import { petsFacade } from './pets.facade'
-import type { Pet } from '../../../shared/api/pets.service'
-
-type PetsState = {
-  items: Pet[]
-  loading: boolean
-}
+import type { PetsState } from './pets.facade'
 
 export function usePets(page: number, search: string) {
   const [state, setState] = useState<PetsState>({
@@ -14,10 +9,7 @@ export function usePets(page: number, search: string) {
   })
 
   useEffect(() => {
-    const sub = petsFacade.pets$.subscribe((value) => {
-      setState(value)
-    })
-
+    const sub = petsFacade.pets$.subscribe(setState)
     petsFacade.load(page, search)
 
     return () => sub.unsubscribe()

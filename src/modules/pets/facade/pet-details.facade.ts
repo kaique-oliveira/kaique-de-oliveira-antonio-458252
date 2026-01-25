@@ -1,7 +1,8 @@
 import { BehaviorSubject } from 'rxjs'
-import { getPetById, type Pet } from '../../../shared/api/pets.service'
+import { petsService } from '../../../shared/api/pets.service'
+import type { Pet } from '../../../shared/api/pets.service'
 
-type PetDetailsState = {
+export type PetDetailsState = {
   pet: Pet | null
   loading: boolean
 }
@@ -17,7 +18,7 @@ class PetDetailsFacade {
   async load(id: number) {
     this.state$.next({ pet: null, loading: true })
 
-    const pet = await getPetById(id)
+    const { data: pet } = await petsService.getById(id)
 
     this.state$.next({
       pet,
