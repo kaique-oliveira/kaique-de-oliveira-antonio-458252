@@ -1,5 +1,5 @@
 import { BehaviorSubject } from 'rxjs'
-import { petsService } from '../../../shared/api/pets.service'
+import { petsService, uploadPetPhoto } from '../../../shared/api/pets.service'
 import type { Pet, CreatePetInput } from '../../../shared/api/pets.service'
 
 export type PetsState = {
@@ -42,10 +42,18 @@ async function deletePet(id: number) {
   await load()
 }
 
+async function uploadPhoto(petId: number, file: File) {
+  await uploadPetPhoto(petId, file)
+  await load()
+}
+
+
 export const petsFacade = {
   pets$: state$.asObservable(),
   load,
   createPet,
   updatePet,
   deletePet,
+  uploadPhoto
 }
+

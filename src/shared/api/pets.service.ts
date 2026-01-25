@@ -50,3 +50,14 @@ export const petsService = {
     return http.delete<void>(`/v1/pets/${id}`)
   },
 }
+
+export async function uploadPetPhoto(petId: number, file: File) {
+  const formData = new FormData()
+  formData.append('file', file)
+
+  await http.post(`/v1/pets/${petId}/fotos`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  })
+}
