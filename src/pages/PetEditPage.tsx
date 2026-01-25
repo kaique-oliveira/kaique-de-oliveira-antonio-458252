@@ -2,6 +2,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { usePetDetails } from '../modules/pets/facade/usePetDetails'
 import type { CreatePetInput } from '../shared/api/pets.service'
 import { petsFacade } from '../modules/pets/facade/pets.facade'
+import { PetPhotoInput } from '../modules/pets/components/PetPhotoInput'
 import { PetForm } from '../modules/pets/components/PetForm'
 
 
@@ -17,15 +18,24 @@ export default function PetEditPage() {
     navigate('/pets')
   }
 
+  async function handlePhotoSelect(file: File) {
+    await petsFacade.uploadPhoto(petId, file)
+  }
+
   if (loading || !pet) {
     return <p className="text-center mt-8">Carregando...</p>
   }
 
   return (
-    <div className="max-w-lg mx-auto mt-8">
-      <h1 className="text-xl font-semibold mb-4">
+    <div className="max-w-lg mx-auto mt-8 space-y-4">
+      <h1 className="text-xl font-semibold">
         Editar Pet
       </h1>
+
+      <PetPhotoInput
+        initialUrl={pet.foto?.url ?? null}
+        onSelect={handlePhotoSelect}
+      />
 
       <PetForm
         initialValues={{
