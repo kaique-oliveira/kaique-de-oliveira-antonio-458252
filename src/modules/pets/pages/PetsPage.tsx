@@ -29,7 +29,13 @@ export default function PetsPage() {
             key={pet.id}
             className="flex justify-between items-center border p-3 rounded"
           >
-            <span>{pet.nome}</span>
+            
+        <Link
+          to={`/pets/${pet.id}`}
+          className="font-medium hover:underline"
+        >
+          {pet.nome}
+        </Link>
 
             <div className="flex gap-2">
               <Link
