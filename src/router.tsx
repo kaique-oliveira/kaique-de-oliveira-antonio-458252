@@ -2,13 +2,12 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { lazy, Suspense } from 'react'
 import ProtectedRoute from './shared/auth/ProtectedRoute'
 import { Layout } from './shared/components/Layout'
-import PetCreatePage from './pages/PetCreatePage'
-import PetEditPage from './pages/PetEditPage'
 
-const PetsPage = lazy(() => import('./pages/PetsPage'))
+
+const PetsPage = lazy(() => import('./modules/pets/pages/PetsPage'))
+const PetDetailsPage = lazy(() => import('./modules/pets/pages/PetDetailsPage'))
 const TutorsPage = lazy(() => import('./pages/TutorsPage'))
 const LoginPage = lazy(() => import('./pages/LoginPage'))
-const PetDetailsPage = lazy(() => import('./pages/PetDetailsPage'))
 const HealthPage = lazy(() => import('./pages/HealthPage'))
 
 export function AppRouter() {
