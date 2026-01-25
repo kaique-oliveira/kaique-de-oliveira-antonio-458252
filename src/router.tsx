@@ -2,6 +2,8 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { lazy, Suspense } from 'react'
 import ProtectedRoute from './shared/auth/ProtectedRoute'
 import { Layout } from './shared/components/Layout'
+import PetCreatePage from './modules/pets/pages/PetCreatePage'
+import PetEditPage from './modules/pets/pages/PetEditPage'
 
 
 const PetsPage = lazy(() => import('./modules/pets/pages/PetsPage'))
