@@ -8,7 +8,7 @@ import PetEditPage from './modules/pets/pages/PetEditPage'
 
 const PetsPage = lazy(() => import('./modules/pets/pages/PetsPage'))
 const PetDetailsPage = lazy(() => import('./modules/pets/pages/PetDetailsPage'))
-const TutorsPage = lazy(() => import('./pages/TutorsPage'))
+const TutorsPage = lazy(() => import('./modules/tutors/pages/TutorsPage'))
 const LoginPage = lazy(() => import('./pages/LoginPage'))
 const HealthPage = lazy(() => import('./pages/HealthPage'))
 
@@ -27,7 +27,8 @@ export function AppRouter() {
               <Route path="/pets/novo" element={<PetCreatePage />} />
               <Route path="/pets/:id" element={<PetDetailsPage />} />
               <Route path="/pets/:id/editar" element={<PetEditPage />} />
-              <Route path="/tutors" element={<TutorsPage />} />
+            <Route path="/tutores" element={<TutorsPage />} />
+
             </Route>
           </Route>
         </Routes>
