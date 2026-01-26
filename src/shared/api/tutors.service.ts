@@ -1,15 +1,21 @@
 import { http } from './http'
+import type { Pet } from './pets.service'
 
 export type Tutor = {
   id: number
   nome: string
   email: string
   telefone?: string | null
+  endereco?: string | null
+  cpf?: number | string | null
   foto?: {
+    id: number
+    nome: string
+    contentType: string
     url: string
   } | null
+  pets?: Pet[]
 }
-
 export type TutorsListParams = {
   page?: number
   size?: number
