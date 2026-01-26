@@ -31,41 +31,66 @@ export function PetForm({ initialValues, onSubmit, loading }: Props) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <input
-        name="nome"
-        placeholder="Nome"
-        value={form.nome}
-        onChange={handleChange}
-        className="w-full border p-2 rounded"
-        required
-      />
+    <form onSubmit={handleSubmit} className="space-y-5">
+      {/* Nome */}
+      <div className="space-y-1">
+        <label className="text-sm font-medium text-gray-700">
+          Nome
+        </label>
 
-      <input
-        name="raca"
-        placeholder="Raça"
-        value={form.raca}
-        onChange={handleChange}
-        className="w-full border p-2 rounded"
-        required
-      />
+        <input
+          name="nome"
+          value={form.nome}
+          onChange={handleChange}
+          placeholder="Nome do pet"
+          className="w-full border border-gray-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-200"
+          required
+        />
+      </div>
 
-      <input
-        name="idade"
-        type="number"
-        placeholder="Idade"
-        value={form.idade ?? ''}
-        onChange={handleChange}
-        className="w-full border p-2 rounded"
-      />
+      {/* Raça */}
+      <div className="space-y-1">
+        <label className="text-sm font-medium text-gray-700">
+          Raça
+        </label>
 
-      <button
-        type="submit"
-        disabled={loading}
-        className="bg-slate-900 text-white px-4 py-2 rounded disabled:opacity-50"
-      >
-        Salvar
-      </button>
+        <input
+          name="raca"
+          value={form.raca}
+          onChange={handleChange}
+          placeholder="Raça do pet"
+          className="w-full border border-gray-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-200"
+          required
+        />
+      </div>
+
+      {/* Idade */}
+      <div className="space-y-1">
+        <label className="text-sm font-medium text-gray-700">
+          Idade
+        </label>
+
+        <input
+          name="idade"
+          type="number"
+          value={form.idade ?? ''}
+          onChange={handleChange}
+          placeholder="Idade (opcional)"
+          className="w-full border border-gray-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-200"
+          min={0}
+        />
+      </div>
+
+      {/* Actions */}
+      <div className="pt-4 flex justify-end">
+        <button
+          type="submit"
+          disabled={loading}
+          className="bg-green-500 hover:bg-green-400 text-white px-6 py-2 rounded-xl font-medium transition disabled:opacity-50 cursor-pointer"
+        >
+          {loading ? 'Salvando...' : 'Salvar'}
+        </button>
+      </div>
     </form>
   )
 }
