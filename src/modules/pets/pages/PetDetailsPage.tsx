@@ -7,6 +7,7 @@ import { petDetailsFacade } from '../facade/pet-details.facade'
 import { petsFacade } from '../facade/pets.facade'
 import { useTutors } from '../../tutors/facade/useTutors'
 import { ConfirmDialog } from '../../../shared/components/ConfirmDialog'
+import toast from 'react-hot-toast'
 
 export default function PetDetailsPage() {
   const { id } = useParams<{ id: string }>()
@@ -20,8 +21,13 @@ export default function PetDetailsPage() {
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false)
 
   async function handleConfirmDelete() {
-    await petsFacade.deletePet(petId)
-    navigate('/pets')
+    try {
+      await petsFacade.deletePet(petId)
+      toast.success('Pet excluído com sucesso')
+      navigate('/pets')
+    } catch {
+      toast.error('Erro ao excluir o pet')
+    }
   }
 
   if (loading || !pet) {
@@ -113,8 +119,16 @@ export default function PetDetailsPage() {
 
           <button
             disabled={!selectedTutor}
-            onClick={() => petDetailsFacade.addTutor(petId, Number(selectedTutor))}
-            className="flex items-center justify-center gap-2 bg-green-500 hover:bg-green-400 disabled:opacity-50 text-white px-6 py-2 rounded-xl transition"
+            onClick={async () => {
+              try {
+                await petDetailsFacade.addTutor(petId, Number(selectedTutor))
+                toast.success('Tutor vinculado com sucesso')
+                setSelectedTutor('')
+              } catch {
+                toast.error('Erro ao vincular tutor')
+              }
+            }}
+            className="flex items-center justify-center gap-2 bg-green-500 hover:bg-green-400 disabled:opacity-50 text-white px-6 py-2 rounded-xl transition cursor-pointer"
           >
             <UserPlus size={16} />
             Vincular
@@ -147,11 +161,16 @@ export default function PetDetailsPage() {
                 </div>
 
                 <button
-                  onClick={(e) => {
+                  onClick={async (e) => {
                     e.stopPropagation()
-                    petDetailsFacade.removeTutor(petId, tutor.id)
+                    try {
+                      await petDetailsFacade.removeTutor(petId, tutor.id)
+                      toast.success('Tutor desvinculado')
+                    } catch {
+                      toast.error('Erro ao remover tutor')
+                    }
                   }}
-                  className="text-red-400 hover:text-red-300 transition"
+                  className="text-red-400 hover:text-red-300 transition cursor-pointer"
                 >
                   <Trash2 size={18} />
                 </button>
