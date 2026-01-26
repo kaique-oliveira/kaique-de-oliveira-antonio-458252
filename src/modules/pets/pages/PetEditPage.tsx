@@ -23,7 +23,7 @@ export default function PetEditPage() {
       await petsFacade.updatePet(petId, data)
 
       toast.success('Pet atualizado com sucesso 🐾')
-      navigate('/pets')
+      navigate(`/pets/${petId}`)
     } catch {
       toast.error('Erro ao atualizar o pet')
     } finally {

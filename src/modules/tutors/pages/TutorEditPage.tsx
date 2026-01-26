@@ -18,7 +18,7 @@ export default function TutorEditPage() {
     try {
       await tutorsFacade.updateTutor(tutorId, data)
       toast.success('Tutor atualizado com sucesso')
-      navigate('/tutors')
+      navigate(`/tutors/${tutorId}`)
     } catch {
       toast.error('Erro ao atualizar tutor')
     }
