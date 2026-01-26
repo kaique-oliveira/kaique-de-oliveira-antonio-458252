@@ -145,7 +145,7 @@ export default function PetDetailsPage() {
             {pet.tutores.map((tutor) => (
               <li
                 key={tutor.id}
-                onClick={() => navigate(`/tutores/${tutor.id}`)}
+                onClick={() => navigate(`/tutors/${tutor.id}`)}
                 className="flex items-center justify-between border border-gray-200 rounded-xl px-4 py-3 hover:bg-gray-50 transition cursor-pointer"
               >
                 <div className="flex items-center gap-3">

@@ -84,7 +84,8 @@ export default function TutorDetailsPage() {
             {tutor.pets.map((pet) => (
               <li
                 key={pet.id}
-                className="flex items-center justify-between border border-gray-200 rounded-xl px-4 py-3 hover:bg-gray-50 transition"
+                onClick={() => navigate(`/pets/${tutor.id}`)}
+                className="flex items-center justify-between cursor-pointer border border-gray-200 rounded-xl px-4 py-3 hover:bg-gray-50 transition"
               >
                 <div className="flex items-center gap-3">
                   {pet.foto?.url ? (
