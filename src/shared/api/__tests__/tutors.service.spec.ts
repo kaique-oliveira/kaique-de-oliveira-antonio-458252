@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest'
-import { petsService } from '../pets.service'
 import { http } from '../http'
+import { tutorsService } from '../tutors.service'
 
 vi.mock('../http', () => ({
   http: {
@@ -8,20 +8,20 @@ vi.mock('../http', () => ({
   },
 }))
 
-describe('pets.service', () => {
-  it('should list pets', async () => {
+describe('tutors.service', () => {
+  it('should list tutors', async () => {
     ;(http.get as any).mockResolvedValue({
       data: {
-        content: [{ id: 1, nome: 'Pet', raca: 'Vira-lata', idade: 2 }],
+        content: [{ id: 1, nome: 'Maria', email: 'maria@email.com' }],
         total: 1,
         page: 1,
         pageCount: 1,
       },
     })
 
-    const response = await petsService.list({ page: 1, nome: '' })
+    const response = await tutorsService.list({ page: 1, nome: '' })
 
     expect(response.data.content).toHaveLength(1)
-    expect(response.data.content[0].nome).toBe('Pet')
+    expect(response.data.content[0].nome).toBe('Maria')
   })
 })

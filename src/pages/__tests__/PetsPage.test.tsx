@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
 import { describe, it, expect, vi } from 'vitest'
-import PetsPage from '../PetsPage'
+import PetsPage from '../../modules/pets/pages/PetsPage'
 
 vi.mock('../../modules/pets/facade/usePets', () => ({
   usePets: () => ({
