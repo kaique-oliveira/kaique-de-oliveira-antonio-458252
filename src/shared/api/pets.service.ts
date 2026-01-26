@@ -52,7 +52,7 @@ export const petsService = {
 
   uploadPhoto(petId: number, file: File) {
     const formData = new FormData()
-    formData.append('file', file)
+    formData.append('foto', file)
 
     return http.post(`/v1/pets/${petId}/fotos`, formData)
   },
