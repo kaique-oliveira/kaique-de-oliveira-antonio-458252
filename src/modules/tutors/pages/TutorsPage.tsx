@@ -1,13 +1,18 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { User, Edit, Trash2, UserPlus } from 'lucide-react'
+import { User, Edit, Trash2, UserPlus, Search } from 'lucide-react'
 import { useState } from 'react'
 import { useTutors } from '../facade/useTutors'
 import { tutorsFacade } from '../facade/tutors.facade'
 import { ConfirmDialog } from '../../../shared/components/ConfirmDialog'
 
 export default function TutorsPage() {
-  const { items, loading } = useTutors(1, '')
+  const navigate = useNavigate()
+
+  const [page, setPage] = useState(1)
+  const [search, setSearch] = useState('')
+  const { items, loading } = useTutors(page, search)
+
   const [deleteId, setDeleteId] = useState<number | null>(null)
 
   async function confirmDelete() {
@@ -16,24 +21,10 @@ export default function TutorsPage() {
     setDeleteId(null)
   }
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center mt-24">
-        <motion.div
-          animate={{ opacity: [0.4, 1, 0.4] }}
-          transition={{ repeat: Infinity, duration: 1.2 }}
-          className="text-green-500"
-        >
-          <User size={36} />
-        </motion.div>
-      </div>
-    )
-  }
-
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6">
+    <div className="max-w-7xl mx-auto px-4 py-6 space-y-14">
       {/* Header */}
-      <div className="flex justify-between items-center mb-10">
+      <div className="flex flex-col sm:flex-row gap-4 sm:items-center sm:justify-between">
         <h1 className="text-2xl font-semibold text-gray-800">Tutores</h1>
 
         <Link
@@ -45,11 +36,38 @@ export default function TutorsPage() {
         </Link>
       </div>
 
+      {/* Search */}
+      <div className="relative max-w-sm">
+        <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+        <input
+          value={search}
+          onChange={(e) => {
+            setPage(1)
+            setSearch(e.target.value)
+          }}
+          placeholder="Buscar tutor pelo nome"
+          className="w-full border border-gray-200 rounded-xl pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-200"
+        />
+      </div>
+
+      {/* Loading */}
+      {loading && (
+        <div className="flex justify-center items-center mt-24">
+          <motion.div
+            animate={{ opacity: [0.4, 1, 0.4] }}
+            transition={{ repeat: Infinity, duration: 1.2 }}
+            className="text-green-500"
+          >
+            <User size={36} />
+          </motion.div>
+        </div>
+      )}
+
       {/* Empty */}
-      {items.length === 0 && (
+      {!loading && items.length === 0 && (
         <div className="flex flex-col items-center justify-center mt-24 text-gray-500">
           <User size={44} className="mb-4 text-green-300" />
-          <p>Nenhum tutor cadastrado</p>
+          <p>Nenhum tutor encontrado</p>
         </div>
       )}
 
@@ -62,10 +80,11 @@ export default function TutorsPage() {
             animate={{ opacity: 1, y: 0 }}
             whileHover={{ y: -2 }}
             transition={{ duration: 0.2 }}
-            className="relative bg-white rounded-3xl shadow-sm hover:shadow-lg transition pt-16"
+            onClick={() => navigate(`/tutors/${tutor.id}`)}
+            className="relative bg-white rounded-3xl shadow-sm hover:shadow-lg transition pt-16 cursor-pointer"
           >
             {/* Avatar */}
-            <Link to={`/tutors/${tutor.id}`} className="absolute -top-10 left-1/2 -translate-x-1/2 cursor-pointer">
+            <div className="absolute -top-10 left-1/2 -translate-x-1/2 pointer-events-none">
               {tutor.foto?.url ? (
                 <img
                   src={tutor.foto.url}
@@ -77,19 +96,14 @@ export default function TutorsPage() {
                   {tutor.nome.charAt(0)}
                 </div>
               )}
-            </Link>
+            </div>
 
             {/* Content */}
             <div className="px-6 pb-5 text-center space-y-2">
-              <Link
-                to={`/tutors/${tutor.id}`}
-                className="block text-lg font-semibold text-gray-800 hover:text-green-600 transition cursor-pointer"
-              >
-                {tutor.nome}
-              </Link>
+              <h2 className="text-lg font-semibold text-gray-800">{tutor.nome}</h2>
 
               {/* Actions */}
-              <div className="flex justify-center gap-6 pt-4">
+              <div className="flex justify-center gap-6 pt-4" onClick={(e) => e.stopPropagation()}>
                 <Link
                   to={`/tutors/${tutor.id}/editar`}
                   className="text-blue-400 hover:text-blue-300 transition cursor-pointer"
@@ -107,6 +121,24 @@ export default function TutorsPage() {
             </div>
           </motion.div>
         ))}
+      </div>
+
+      {/* Pagination */}
+      <div className="flex justify-center gap-3 pt-8">
+        <button
+          disabled={page === 1}
+          onClick={() => setPage((p) => p - 1)}
+          className="px-4 py-2 rounded-xl border border-gray-200 text-gray-600 disabled:opacity-40 hover:bg-gray-50 transition cursor-pointer"
+        >
+          Anterior
+        </button>
+
+        <button
+          onClick={() => setPage((p) => p + 1)}
+          className="px-4 py-2 rounded-xl border border-gray-200 text-gray-600 hover:bg-gray-50 transition cursor-pointer"
+        >
+          Próxima
+        </button>
       </div>
 
       {/* Dialog */}
