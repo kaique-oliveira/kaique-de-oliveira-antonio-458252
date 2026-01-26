@@ -13,6 +13,7 @@ export function TutorForm({ initialValues, onSubmit }: Props) {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
+
     await onSubmit({
       nome,
       email,
@@ -21,32 +22,44 @@ export function TutorForm({ initialValues, onSubmit }: Props) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <input
-        className="w-full border p-2"
-        placeholder="Nome"
-        value={nome}
-        onChange={(e) => setNome(e.target.value)}
-        required
-      />
+    <form onSubmit={handleSubmit} className="space-y-5">
+      <div className="space-y-1">
+        <label className="text-sm font-medium text-gray-700">Nome</label>
+        <input
+          className="w-full border border-gray-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-200"
+          placeholder="Nome do tutor"
+          value={nome}
+          onChange={(e) => setNome(e.target.value)}
+          required
+        />
+      </div>
 
-      <input
-        className="w-full border p-2"
-        placeholder="Email"
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
+      <div className="space-y-1">
+        <label className="text-sm font-medium text-gray-700">Email</label>
+        <input
+          className="w-full border border-gray-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-200"
+          placeholder="Email"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+      </div>
 
-      <input
-        className="w-full border p-2"
-        placeholder="Telefone"
-        value={telefone}
-        onChange={(e) => setTelefone(e.target.value)}
-      />
+      <div className="space-y-1">
+        <label className="text-sm font-medium text-gray-700">Telefone</label>
+        <input
+          className="w-full border border-gray-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-200"
+          placeholder="Telefone"
+          value={telefone}
+          onChange={(e) => setTelefone(e.target.value)}
+        />
+      </div>
 
-      <button className="bg-slate-900 text-white px-4 py-2 rounded">
+      <button
+        type="submit"
+        className="w-full bg-green-600 hover:bg-green-500 text-white py-2 rounded-xl font-medium transition cursor-pointer"
+      >
         Salvar
       </button>
     </form>

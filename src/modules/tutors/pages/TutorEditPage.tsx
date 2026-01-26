@@ -1,4 +1,5 @@
 import { useParams, useNavigate } from 'react-router-dom'
+import { ArrowLeft } from 'lucide-react'
 import { TutorForm } from '../components/TutorForm'
 import { PetPhotoInput } from '../../pets/components/PetPhotoInput'
 import { tutorsFacade } from '../facade/tutors.facade'
@@ -22,17 +23,23 @@ export default function TutorEditPage() {
   }
 
   if (loading || !tutor) {
-    return <p className="text-center mt-8">Carregando...</p>
+    return <p className="text-center mt-8 text-gray-500">Carregando...</p>
   }
 
   return (
-    <div className="max-w-lg mx-auto mt-8 space-y-4">
-      <h1 className="text-xl font-semibold">Editar Tutor</h1>
+    <div className="max-w-lg mx-auto mt-8 space-y-6 px-4">
+      <div className="flex items-center gap-4">
+        <button
+          onClick={() => navigate('/tutors')}
+          className="flex items-center gap-1 text-gray-500 hover:text-gray-700 transition cursor-pointer"
+        >
+          <ArrowLeft size={20} />
+        </button>
 
-      <PetPhotoInput
-        initialUrl={tutor.foto?.url ?? null}
-        onSelect={handlePhotoSelect}
-      />
+        <h1 className="text-2xl font-semibold text-gray-800">Editar Tutor</h1>
+      </div>
+
+      <PetPhotoInput initialUrl={tutor.foto?.url ?? null} onSelect={handlePhotoSelect} />
 
       <TutorForm
         initialValues={{

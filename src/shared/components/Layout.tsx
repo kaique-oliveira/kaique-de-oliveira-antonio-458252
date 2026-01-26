@@ -19,11 +19,7 @@ export function Layout() {
       <Link
         to={to}
         className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition
-          ${
-            active
-              ? 'bg-green-100 text-green-700'
-              : 'text-gray-600 hover:bg-green-50 hover:text-green-700'
-          }
+          ${active ? 'bg-green-100 text-green-700' : 'text-gray-600 hover:bg-green-50 hover:text-green-700'}
         `}
       >
         <Icon size={18} />
@@ -50,7 +46,7 @@ export function Layout() {
           {/* Nav */}
           <nav className="flex items-center gap-2">
             {navItem('/pets', 'Pets', PawPrint)}
-            {navItem('/tutores', 'Tutores', Users)}
+            {navItem('/tutors', 'Tutores', Users)}
           </nav>
 
           {/* Logout */}
