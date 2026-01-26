@@ -1,7 +1,9 @@
-import { useParams, useNavigate, Link } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { ArrowLeft, User, PawPrint } from 'lucide-react'
+import { ArrowLeft, User, Trash2, PawPrint } from 'lucide-react'
+import toast from 'react-hot-toast'
 import { useTutorDetails } from '../facade/useTutorDetails'
+import { tutorDetailsFacade } from '../facade/tutor-details.facade'
 
 export default function TutorDetailsPage() {
   const { id } = useParams<{ id: string }>()
@@ -9,6 +11,15 @@ export default function TutorDetailsPage() {
   const navigate = useNavigate()
 
   const { tutor, loading } = useTutorDetails(tutorId)
+
+  async function handleUnlinkPet(petId: number) {
+    try {
+      await tutorDetailsFacade.removePet(tutorId, petId)
+      toast.success('Pet desvinculado com sucesso')
+    } catch {
+      toast.error('Erro ao desvincular pet')
+    }
+  }
 
   if (loading || !tutor) {
     return (
@@ -63,58 +74,48 @@ export default function TutorDetailsPage() {
         <h2 className="text-2xl font-semibold text-gray-800">{tutor.nome}</h2>
 
         <div className="mt-2 text-gray-500 text-sm space-y-1">
-          {tutor.email && <p>{tutor.email}</p>}
+          <p>{tutor.email}</p>
           {tutor.telefone && <p>{tutor.telefone}</p>}
         </div>
       </motion.div>
 
       {/* Pets vinculados */}
-      <div className="space-y-4">
+      <div className="bg-white rounded-2xl shadow-sm p-6 space-y-4">
         <h3 className="text-lg font-semibold text-gray-800">Pets vinculados</h3>
 
-        {tutor.pets && tutor.pets.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {tutor.pets?.length ? (
+          <ul className="space-y-3">
             {tutor.pets.map((pet) => (
-              <motion.div
+              <li
                 key={pet.id}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                whileHover={{ y: -4 }}
-                transition={{ duration: 0.2 }}
-                className="bg-white rounded-2xl shadow-sm hover:shadow-md transition cursor-pointer"
+                className="flex items-center justify-between border border-gray-200 rounded-xl px-4 py-3 hover:bg-gray-50 transition"
               >
-                <Link to={`/pets/${pet.id}`} className="block p-4 text-center space-y-3">
-                  {/* Pet avatar */}
-                  <div className="flex justify-center">
-                    {pet.foto?.url ? (
-                      <img
-                        src={pet.foto.url}
-                        alt={pet.nome}
-                        className="w-20 h-20 rounded-full object-cover border border-gray-200"
-                      />
-                    ) : (
-                      <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center text-green-600">
-                        <PawPrint size={28} />
-                      </div>
-                    )}
-                  </div>
+                <div className="flex items-center gap-3">
+                  {pet.foto?.url ? (
+                    <img src={pet.foto.url} alt={pet.nome} className="w-10 h-10 rounded-full object-cover" />
+                  ) : (
+                    <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600">
+                      <PawPrint size={18} />
+                    </div>
+                  )}
 
                   <div>
-                    <p className="font-semibold text-gray-800">{pet.nome}</p>
-                    <p className="text-sm text-gray-500">
-                      {pet.raca}
-                      {pet.idade !== null && ` • ${pet.idade} anos`}
-                    </p>
+                    <p className="font-medium text-gray-700">{pet.nome}</p>
+                    <p className="text-xs text-gray-500">{pet.raca}</p>
                   </div>
-                </Link>
-              </motion.div>
+                </div>
+
+                <button
+                  onClick={() => handleUnlinkPet(pet.id)}
+                  className="text-red-400 hover:text-red-300 transition cursor-pointer"
+                >
+                  <Trash2 size={18} />
+                </button>
+              </li>
             ))}
-          </div>
+          </ul>
         ) : (
-          <div className="flex flex-col items-center justify-center py-12 text-gray-500">
-            <PawPrint size={40} className="mb-3 text-green-300" />
-            <p>Nenhum pet vinculado a este tutor</p>
-          </div>
+          <p className="text-sm text-gray-500">Nenhum pet vinculado</p>
         )}
       </div>
     </div>

@@ -16,6 +16,7 @@ export type Tutor = {
   } | null
   pets?: Pet[]
 }
+
 export type TutorsListParams = {
   page?: number
   size?: number
@@ -61,5 +62,9 @@ export const tutorsService = {
     formData.append('foto', file)
 
     return http.post(`/v1/tutores/${tutorId}/fotos`, formData)
+  },
+
+  removePet(tutorId: number, petId: number) {
+    return http.delete(`/v1/tutores/${tutorId}/pets/${petId}`)
   },
 }

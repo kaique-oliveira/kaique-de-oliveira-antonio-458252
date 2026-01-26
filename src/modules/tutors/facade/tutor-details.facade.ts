@@ -25,6 +25,17 @@ class TutorDetailsFacade {
       loading: false,
     })
   }
+
+  async removePet(tutorId: number, petId: number) {
+    this.state$.next({
+      ...this.state$.value,
+      loading: true,
+    })
+
+    await tutorsService.removePet(tutorId, petId)
+
+    await this.load(tutorId)
+  }
 }
 
 export const tutorDetailsFacade = new TutorDetailsFacade()
