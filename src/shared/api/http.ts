@@ -1,7 +1,8 @@
 import axios from 'axios'
-import { refresh } from './auth.service'
+import { refreshHttp } from './refreshHttp'
 
 let isRefreshing = false
+
 let failedQueue: {
   resolve: (token: string) => void
   reject: (error: any) => void
@@ -19,13 +20,19 @@ export const http = axios.create({
   baseURL: 'https://pet-manager-api.geia.vip',
 })
 
+/* ================= REQUEST ================= */
+
 http.interceptors.request.use((config) => {
   const token = localStorage.getItem('access_token')
+
   if (token) {
     config.headers.Authorization = `Bearer ${token}`
   }
+
   return config
 })
+
+/* ================= RESPONSE ================= */
 
 http.interceptors.response.use(
   (response) => response,
@@ -49,14 +56,21 @@ http.interceptors.response.use(
         const refreshToken = localStorage.getItem('refresh_token')
         if (!refreshToken) throw error
 
-        const { access_token, refresh_token } = await refresh(refreshToken)
+        // 🔑 DOC OFICIAL:
+        // PUT /autenticacao/refresh
+        // Authorization: Bearer <refresh_token>
+        const { data } = await refreshHttp.put('/autenticacao/refresh', null, {
+          headers: {
+            Authorization: `Bearer ${refreshToken}`,
+          },
+        })
 
-        localStorage.setItem('access_token', access_token)
-        localStorage.setItem('refresh_token', refresh_token)
+        localStorage.setItem('access_token', data.access_token)
+        localStorage.setItem('refresh_token', data.refresh_token)
 
-        processQueue(null, access_token)
+        processQueue(null, data.access_token)
 
-        originalRequest.headers.Authorization = `Bearer ${access_token}`
+        originalRequest.headers.Authorization = `Bearer ${data.access_token}`
         return http(originalRequest)
       } catch (err) {
         processQueue(err, null)
