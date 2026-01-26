@@ -4,15 +4,17 @@ import type { CreateTutorInput } from '../../../shared/api/tutors.service'
 type Props = {
   initialValues?: CreateTutorInput
   onSubmit: (data: CreateTutorInput) => Promise<void>
+  loading?: boolean
 }
 
-export function TutorForm({ initialValues, onSubmit }: Props) {
+export function TutorForm({ initialValues, onSubmit, loading }: Props) {
   const [nome, setNome] = useState(initialValues?.nome ?? '')
   const [email, setEmail] = useState(initialValues?.email ?? '')
   const [telefone, setTelefone] = useState(initialValues?.telefone ?? '')
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
+    if (loading) return
 
     await onSubmit({
       nome,
@@ -58,9 +60,10 @@ export function TutorForm({ initialValues, onSubmit }: Props) {
 
       <button
         type="submit"
-        className="w-full bg-green-600 hover:bg-green-500 text-white py-2 rounded-xl font-medium transition cursor-pointer"
+        disabled={loading}
+        className="w-full bg-green-600 hover:bg-green-500 disabled:opacity-50 text-white py-2 rounded-xl font-medium transition cursor-pointer"
       >
-        Salvar
+        {loading ? 'Salvando...' : 'Salvar'}
       </button>
     </form>
   )

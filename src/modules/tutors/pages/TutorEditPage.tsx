@@ -1,5 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { ArrowLeft } from 'lucide-react'
+import toast from 'react-hot-toast'
 import { TutorForm } from '../components/TutorForm'
 import { PetPhotoInput } from '../../pets/components/PetPhotoInput'
 import { tutorsFacade } from '../facade/tutors.facade'
@@ -14,12 +15,22 @@ export default function TutorEditPage() {
   const { tutor, loading } = useTutorDetails(tutorId)
 
   async function handleSubmit(data: CreateTutorInput) {
-    await tutorsFacade.updateTutor(tutorId, data)
-    navigate('/tutors')
+    try {
+      await tutorsFacade.updateTutor(tutorId, data)
+      toast.success('Tutor atualizado com sucesso')
+      navigate('/tutors')
+    } catch {
+      toast.error('Erro ao atualizar tutor')
+    }
   }
 
   async function handlePhotoSelect(file: File) {
-    await tutorsFacade.uploadPhoto(tutorId, file)
+    try {
+      await tutorsFacade.uploadPhoto(tutorId, file)
+      toast.success('Foto atualizada com sucesso')
+    } catch {
+      toast.error('Erro ao atualizar foto')
+    }
   }
 
   if (loading || !tutor) {
@@ -28,6 +39,7 @@ export default function TutorEditPage() {
 
   return (
     <div className="max-w-lg mx-auto mt-8 space-y-6 px-4">
+      {/* Header */}
       <div className="flex items-center gap-4">
         <button
           onClick={() => navigate('/tutors')}
@@ -39,8 +51,10 @@ export default function TutorEditPage() {
         <h1 className="text-2xl font-semibold text-gray-800">Editar Tutor</h1>
       </div>
 
+      {/* Foto */}
       <PetPhotoInput initialUrl={tutor.foto?.url ?? null} onSelect={handlePhotoSelect} />
 
+      {/* Form */}
       <TutorForm
         initialValues={{
           nome: tutor.nome,

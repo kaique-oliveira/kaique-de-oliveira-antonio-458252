@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ArrowLeft } from 'lucide-react'
+import toast from 'react-hot-toast'
 import { TutorForm } from '../components/TutorForm'
 import { PetPhotoInput } from '../../pets/components/PetPhotoInput'
 import { tutorsFacade } from '../facade/tutors.facade'
@@ -11,13 +12,18 @@ export default function TutorCreatePage() {
   const [photo, setPhoto] = useState<File | null>(null)
 
   async function handleSubmit(data: CreateTutorInput) {
-    const tutor = await tutorsFacade.createTutor(data)
+    try {
+      const tutor = await tutorsFacade.createTutor(data)
 
-    if (photo) {
-      await tutorsFacade.uploadPhoto(tutor.id, photo)
+      if (photo) {
+        await tutorsFacade.uploadPhoto(tutor.id, photo)
+      }
+
+      toast.success('Tutor cadastrado com sucesso')
+      navigate('/tutors')
+    } catch {
+      toast.error('Erro ao cadastrar tutor')
     }
-
-    navigate('/tutors')
   }
 
   return (

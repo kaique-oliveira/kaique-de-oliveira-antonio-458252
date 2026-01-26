@@ -38,17 +38,13 @@ export default function TutorDetailsPage() {
   return (
     <div className="max-w-5xl mx-auto px-4 py-8 space-y-10">
       {/* Header */}
-      <div className="flex items-center gap-4">
-        <button
-          onClick={() => navigate('/tutors')}
-          className="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 transition cursor-pointer"
-        >
-          <ArrowLeft size={18} />
-          Voltar
-        </button>
-
-        <h1 className="text-2xl font-semibold text-gray-800">Detalhes do Tutor</h1>
-      </div>
+      <button
+        onClick={() => navigate(-1)}
+        className="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 transition cursor-pointer"
+      >
+        <ArrowLeft size={18} />
+        Voltar
+      </button>
 
       {/* Tutor Card */}
       <motion.div

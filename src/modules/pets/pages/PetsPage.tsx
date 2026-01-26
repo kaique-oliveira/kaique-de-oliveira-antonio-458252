@@ -2,6 +2,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Edit, Trash2, PawPrint, Search } from 'lucide-react'
 import { useState } from 'react'
+import toast from 'react-hot-toast'
 import { petsFacade } from '../facade/pets.facade'
 import { usePets } from '../facade/usePets'
 import { ConfirmDialog } from '../../../shared/components/ConfirmDialog'
@@ -19,14 +20,20 @@ export default function PetsPage() {
   }>({ open: false, petId: 0 })
 
   async function handleConfirmDelete() {
-    await petsFacade.deletePet(openDeleteDialog.petId)
-    setOpenDeleteDialog({ open: false, petId: 0 })
+    try {
+      await petsFacade.deletePet(openDeleteDialog.petId)
+      toast.success('Pet excluído com sucesso 🐾')
+    } catch {
+      toast.error('Erro ao excluir o pet')
+    } finally {
+      setOpenDeleteDialog({ open: false, petId: 0 })
+    }
   }
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 space-y-14">
       {/* Header */}
-      <div className="flex  sm:flex-row gap-4 sm:items-center justify-between">
+      <div className="flex sm:flex-row gap-4 sm:items-center justify-between">
         <h1 className="text-2xl font-semibold text-gray-800">Pets</h1>
 
         <Link

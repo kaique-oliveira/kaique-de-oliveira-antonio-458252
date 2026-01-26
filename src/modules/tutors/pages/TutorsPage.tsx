@@ -2,6 +2,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { User, Edit, Trash2, UserPlus, Search } from 'lucide-react'
 import { useState } from 'react'
+import toast from 'react-hot-toast'
 import { useTutors } from '../facade/useTutors'
 import { tutorsFacade } from '../facade/tutors.facade'
 import { ConfirmDialog } from '../../../shared/components/ConfirmDialog'
@@ -17,8 +18,15 @@ export default function TutorsPage() {
 
   async function confirmDelete() {
     if (!deleteId) return
-    await tutorsFacade.deleteTutor(deleteId)
-    setDeleteId(null)
+
+    try {
+      await tutorsFacade.deleteTutor(deleteId)
+      toast.success('Tutor excluído com sucesso')
+    } catch {
+      toast.error('Erro ao excluir tutor')
+    } finally {
+      setDeleteId(null)
+    }
   }
 
   return (
