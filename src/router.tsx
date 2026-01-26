@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { lazy, Suspense } from 'react'
 import ProtectedRoute from './shared/auth/ProtectedRoute'
 import { Layout } from './shared/components/Layout'
+import { AppLoading } from './shared/components/AppLoading'
 
 const LoginPage = lazy(() => import('./pages/LoginPage'))
 const HealthPage = lazy(() => import('./pages/HealthPage'))
@@ -18,7 +19,7 @@ const TutorEditPage = lazy(() => import('./modules/tutors/pages/TutorEditPage'))
 export function AppRouter() {
   return (
     <BrowserRouter>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<AppLoading />}>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/health" element={<HealthPage />} />
