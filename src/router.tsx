@@ -15,6 +15,7 @@ const PetDetailsPage = lazy(() => import('./modules/pets/pages/PetDetailsPage'))
 const TutorsPage = lazy(() => import('./modules/tutors/pages/TutorsPage'))
 const TutorCreatePage = lazy(() => import('./modules/tutors/pages/TutorCreatePage'))
 const TutorEditPage = lazy(() => import('./modules/tutors/pages/TutorEditPage'))
+const TutorDetailsPage = lazy(() => import('./modules/tutors/pages/TutorDetailsPage'))
 
 export function AppRouter() {
   return (
@@ -36,6 +37,7 @@ export function AppRouter() {
               <Route path="/tutors" element={<TutorsPage />} />
               <Route path="/tutors/novo" element={<TutorCreatePage />} />
               <Route path="/tutors/:id/editar" element={<TutorEditPage />} />
+              <Route path="/tutors/:id" element={<TutorDetailsPage />} />
             </Route>
           </Route>
         </Routes>
