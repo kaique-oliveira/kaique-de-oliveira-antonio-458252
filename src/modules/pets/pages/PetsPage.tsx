@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Edit, Trash2, PawPrint, Search } from 'lucide-react'
-import { useState } from 'react'
+import { Edit, Trash2, PawPrint, Search, X } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { petsFacade } from '../facade/pets.facade'
 import { usePets } from '../facade/usePets'
@@ -10,14 +10,28 @@ import { ConfirmDialog } from '../../../shared/components/ConfirmDialog'
 export default function PetsPage() {
   const navigate = useNavigate()
 
-  const [page, setPage] = useState(1)
-  const [search, setSearch] = useState('')
-  const { items, loading } = usePets(page, search)
+  const [page, setPage] = useState(0)
+
+  const [searchInput, setSearchInput] = useState('')
+  const [debouncedSearch, setDebouncedSearch] = useState('')
+
+  const { items, loading } = usePets(page, debouncedSearch)
 
   const [openDeleteDialog, setOpenDeleteDialog] = useState<{
     open: boolean
     petId: number
   }>({ open: false, petId: 0 })
+
+  useEffect(() => {
+    if ([1, 2, 3].includes(searchInput.length)) return
+
+    const timer = setTimeout(() => {
+      setPage(0)
+      setDebouncedSearch(searchInput)
+    }, 800)
+
+    return () => clearTimeout(timer)
+  }, [searchInput])
 
   async function handleConfirmDelete() {
     try {
@@ -47,15 +61,32 @@ export default function PetsPage() {
       {/* Search */}
       <div className="relative max-w-sm">
         <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+
         <input
-          value={search}
-          onChange={(e) => {
-            setPage(1)
-            setSearch(e.target.value)
-          }}
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.target.value)}
           placeholder="Buscar pet pelo nome"
-          className="w-full border border-gray-200 rounded-xl pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-200"
+          className="
+            w-full border border-gray-200 rounded-xl
+            pl-10 pr-10 py-2
+            focus:outline-none focus:ring-2 focus:ring-green-200
+          "
         />
+
+        {searchInput && (
+          <button
+            type="button"
+            onClick={() => setSearchInput('')}
+            className="
+        absolute right-3 top-1/2 -translate-y-1/2
+        text-gray-400 hover:text-gray-600
+        transition cursor-pointer
+      "
+            aria-label="Limpar busca"
+          >
+            <X size={16} />
+          </button>
+        )}
       </div>
 
       {/* Loading */}
@@ -80,7 +111,7 @@ export default function PetsPage() {
       )}
 
       {/* Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-16">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-16 mt-24">
         {items.map((pet) => (
           <motion.div
             key={pet.id}
@@ -125,12 +156,7 @@ export default function PetsPage() {
                 </Link>
 
                 <button
-                  onClick={() =>
-                    setOpenDeleteDialog({
-                      open: true,
-                      petId: pet.id,
-                    })
-                  }
+                  onClick={() => setOpenDeleteDialog({ open: true, petId: pet.id })}
                   className="text-red-400 hover:text-red-300 transition cursor-pointer"
                 >
                   <Trash2 size={18} />

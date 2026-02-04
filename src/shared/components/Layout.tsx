@@ -18,7 +18,7 @@ export function Layout() {
     return (
       <Link
         to={to}
-        className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition
+        className={`flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium transition
           ${active ? 'bg-green-100 text-green-700' : 'text-gray-600 hover:bg-green-50 hover:text-green-700'}
         `}
       >
